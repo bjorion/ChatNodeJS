@@ -19,7 +19,7 @@ User.prototype.equals = function(other)
 
 User.prototype.toString = function() 
 {
-	let address = (this.sseClient) ? this.sseClient.req.socket.localAddress : null;
+	let address = (this.sseClient) ? this.sseClient.req.socket.remoteAddress : null;
 	let port = (this.sseClient) ? this.sseClient.req.socket.remotePort : null;
 	return "[" + this.nickname + ", " + this.address + "-" + this.port + ", sse: " + address + "-" + port + "]";
 };

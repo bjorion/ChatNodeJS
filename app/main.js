@@ -59,7 +59,7 @@ server.on('request', (req, res) =>
 {
 	// debugHeaders(req);
 	let method = req.method.toLowerCase();
-	let ip = req.socket.localAddress;
+	let ip = req.socket.remoteAddress;
 	let remotePort = req.socket.remotePort;
 	let resource = url.parse(req.url).pathname;
 	
@@ -124,7 +124,7 @@ server.on('close', function()
 const sse = new SSE(server);
 sse.on('connection', function(client)
 {
-	let newUser = new User(client.req.socket.localAddress, client.req.socket.remotePort);
+	let newUser = new User(client.req.socket.remoteAddress, client.req.socket.remotePort);
 	// log("sse: connection with user " + newUser);
 	
 	let user = users.contains(newUser);
@@ -135,11 +135,11 @@ sse.on('connection', function(client)
 			log("sse: new connection with user " + user);
 		}
 		else {
-			// log("sse: already connected with user " + user);
+			log("sse: already connected with user " + user);
 		}
 	}
 	else {
-		log("sse: user not found?");
+		log("sse: user not found? " + newUser);
 	}
 });
 
@@ -155,7 +155,7 @@ msgDispatcher.on('dispatch', function(src, text)
 		let user = users[i];
 		if (user.sseClient) {
 			let content = JSON.stringify(msg);
-			// log("sse: send to " + user + ": " + content);
+			log("sse: send to " + user);
 			user.sseClient.send(content);
 		}
 	}
@@ -166,6 +166,12 @@ msgDispatcher.on('dispatch', function(src, text)
 function log(msg) 
 {
 	console.log(msg);
+}
+
+function logIP(msg, r) 
+{
+	log(msg + ": local : " + r.socket.localAddress + "-" + r.socket.localPort);
+	log(msg + ": remote: " + r.socket.remoteAddress + "-" + r.socket.remotePort);
 }
 
 // --- Start application ---
