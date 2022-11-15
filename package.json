@@ -11,7 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "grunt": "^1.5.3",
-    "grunt-contrib-jshint": "^2.1.0"
+    "grunt-contrib-jshint": "^3.2.0"
   },
   "dependencies": {
     "sse": "0.0.8"
